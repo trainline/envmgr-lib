@@ -27,15 +27,7 @@ class Upstream(object):
         n_ready = len(toggled_upstreams)
         n_lb = len(load_balancers)
         toggle_complete = slice_active and n_ready is n_total and n_ready is not 0
-        result = {
-            'active': toggle_complete,
-            'slice':self.slice,
-            'slice_config':slice_state,
-            'active_upstreams':n_ready,
-            'total_upstreams':n_total,
-            'total_load_balancers': n_lb
-        }
-        return result
+        return UpstreamStatus(toggle_complete, self.slice, slice_state, n_ready, n_total, n_lb)
 
     def get_name(self):
         if self.name is None:
@@ -53,7 +45,7 @@ class Upstream(object):
         env_type = self.client.get_environmenttype_config(env_type_name)
         load_balancers = list(env_type.get('Value').get('LoadBalancers'))
         return load_balancers
-    
+
     def __get_active_status(self, upstream_name, load_balancers):
         all_upstreams = reduce(lambda a,b: a + self.client.get_loadbalancer(b), load_balancers, [])
         lb_upstreams = [ upstream for upstream in all_upstreams if upstream.get('Name') == upstream_name ] 
@@ -61,6 +53,17 @@ class Upstream(object):
         lb_upstreams = map(host_to_upstream, lb_upstreams)
         lb_config = map(slice_to_upstream, self.client.get_upstream_slices(upstream_name, self.env))
         return {'upstream_status':lb_upstreams, 'upstream_config':lb_config}
+
+
+class UpstreamStatus(object):
+    def __init__(self, is_active, slice, slice_config, active_upstreams, total_upstreams, total_load_balancers):
+        self.is_active = is_active
+        self.slice = slice
+        self.slice_config = slice_config
+        self.active_upstreams = active_upstreams
+        self.total_upstreams = total_upstreams
+        self.total_load_balancers = total_load_balancers
+
 
 def host_to_upstream(host): 
     return {
