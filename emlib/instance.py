@@ -13,6 +13,22 @@ class Instance(object):
         return map(Instance.__from_raw, raw)
 
     @staticmethod
+    def get_instances_by_ami_age(age, env=None, cluster=None, account=None):
+        instances = Instance.get_all(env, cluster, account)
+        amis = AMI.get_all()
+        map_amis_to_instances = InstanceAmiMapper(instances, amis)
+        map_amis_to_instances.run()
+        age = int(age)
+        matchers = [
+            lambda ami,instance: ami.id == instance.ami_id,
+            lambda ami,instance: ami.days_behind_latest >= age
+        ]
+        old_instances = [ instance for instance in instances if 
+            any(ami for ami in amis if all([ match(ami,instance) for match in matchers ]) )
+        ]
+        return list(old_instances)
+
+    @staticmethod
     def __from_raw(instance):
         tags = instance.get('Tags', [])
         args = {
@@ -27,26 +43,7 @@ class Instance(object):
             'ami_age': None
         }
         return Instance(**args)
-
-    @staticmethod
-    def get_instances_by_ami_age(age, env=None, cluster=None, account=None):
-        instances = Instance.get_all(env, cluster, account)
-        amis = AMI.get_all()
-
-        map_amis_to_instances = InstanceAmiMapper(instances, amis)
-        map_amis_to_instances.run()
-        
-        
-        age = int(age)
-        matchers = [
-            lambda ami,instance: ami.id == instance.ami_id,
-            lambda ami,instance: ami.days_behind_latest >= age
-        ]
-        old_instances = [ instance for instance in instances if 
-            any(ami for ami in amis if all([ match(ami,instance) for match in matchers ]) )
-        ]
-        return list(old_instances)
-
+    
     def __init__(self, **kwargs):
         self.id = kwargs.get('id')
         self.type = kwargs.get('type')

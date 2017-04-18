@@ -1,12 +1,10 @@
 # Copyright (c) Trainline Limited, 2017. All rights reserved. See LICENSE.txt in the project root for license information.
 
+from json import dumps
 from emlib import EmClient
 from repoze.lru import lru_cache
 
 class AMI(object):
-
-    __client = EmClient()
-
     __property_map = [
         ('ImageId','id'),('CreationDate','created'),('Platform','platform'),('Name','name'),
         ('Description','description'),('AmiType','type'),('AmiVersion','version'),
@@ -18,7 +16,8 @@ class AMI(object):
 
     @staticmethod
     def get_all():
-        raw = AMI.__client.get_images()
+        client = EmClient()
+        raw = client.get_images()
         return map(AMI.__from_raw, raw)
 
     @staticmethod
@@ -46,3 +45,5 @@ class AMI(object):
         self.days_behind_latest = int(kwargs.get('days_behind_latest'))
         self.account_name = kwargs.get('account_name')
 
+    def __repr__(self):
+        return dumps(vars(self))
