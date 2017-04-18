@@ -80,7 +80,7 @@ class Service(object):
 
     def toggle(self):
         self.client.put_service_slices_toggle(self.name, self.env)
-        new_active_slices = self.get_slice()[0]
+        new_active_slices = self.get_slices()
         if new_active_slices:
             active_slice = new_active_slices[0].get('Name').lower()
             return Upstream(self.name, active_slice, self.env)
