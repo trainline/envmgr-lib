@@ -4,4 +4,5 @@ from .client import EmClient, config
 from .upstream import Upstream
 from .asg import ASG
 from .service import Service
-
+from .ami import AMI
+from .instance import Instance

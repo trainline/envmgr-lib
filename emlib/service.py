@@ -87,6 +87,3 @@ class Service(object):
         else:
             raise Exception('Could not determine active slice')
         
-
-
-
