@@ -1,7 +1,7 @@
 # Copyright (c) Trainline Limited, 2017. All rights reserved. See LICENSE.txt in the project root for license information.
 
-from json import dumps
 from emlib import EmClient, AMI
+from emlib.utils import get_properties
 from repoze.lru import lru_cache
 
 class Instance(object):
@@ -56,7 +56,7 @@ class Instance(object):
         self.ami_id = kwargs.get('ami_id')
 
     def __repr__(self):
-        return dumps(vars(self))
+        return get_properties(self)
 
 
 class InstanceAmiMapper(object):
