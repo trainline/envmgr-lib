@@ -4,4 +4,6 @@
 *.pyc
 .cache
 .eggs
+build
+dist
 
