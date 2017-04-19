@@ -1,16 +1,16 @@
 # Copyright (c) Trainline Limited, 2017. All rights reserved. See LICENSE.txt in the project root for license information.
 
-import emlib
+import envmgr
 
 from unittest import TestCase
 from mock import patch
-from emlib import Service
+from envmgr import Service
 
 class TestService(TestCase):
     
     @classmethod
     def setUpClass(cls):
-        emlib.config('host', 'user', 'dGVzdA==')
+        envmgr.config('host', 'user', 'dGVzdA==')
 
     def test_no_set_version(self):
         service = Service('TestService', 'TE1')
@@ -33,3 +33,5 @@ class TestService(TestCase):
         service = Service('TestService', 'TE1')
         health = service.get_health('green')
         mock_get_service_health.assert_called_with('TestService', 'TE1', 'green')
+
+        

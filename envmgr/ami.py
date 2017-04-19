@@ -1,7 +1,7 @@
 # Copyright (c) Trainline Limited, 2017. All rights reserved. See LICENSE.txt in the project root for license information.
 
-from emlib import EmClient
-from emlib.utils import get_properties
+from envmgr import EmClient
+from envmgr.utils import get_properties
 from repoze.lru import lru_cache
 
 class AMI(object):

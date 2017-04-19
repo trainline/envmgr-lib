@@ -1,16 +1,16 @@
 # Copyright (c) Trainline Limited, 2017. All rights reserved. See LICENSE.txt in the project root for license information.
 
-import emlib
+import envmgr
 
 from unittest import TestCase
 from mock import patch
-from emlib import ASG
+from envmgr import ASG
 
 class TestASG(TestCase):
     
     @classmethod
     def setUpClass(cls):
-        emlib.config('host', 'user', 'dGVzdA==')
+        envmgr.config('host', 'user', 'dGVzdA==')
 
     @patch('environment_manager.EMApi.get_asg')
     def test_get_schedule_requests_asg(self, mock_get_asg):

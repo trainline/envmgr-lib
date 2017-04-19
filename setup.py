@@ -30,6 +30,6 @@ setup(name='envmgr-lib',
             ],
         license='Apache 2.0',
         package_data={'': ['LICENSE.txt']},
-        packages=['emlib'],
+        packages=['envmgr'],
         zip_safe=True)
 

@@ -2,7 +2,7 @@
 
 import requests
 
-from emlib import EmClient, Upstream
+from envmgr import EmClient, Upstream
 
 class Service(object):
 
