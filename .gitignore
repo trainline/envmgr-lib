@@ -2,4 +2,6 @@
 *.swp
 *.swo
 *.pyc
-emlib/main.py
+.cache
+.eggs
+

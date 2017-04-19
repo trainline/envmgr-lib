@@ -17,11 +17,8 @@ setup(name='envmgr-lib',
         install_requires = [
             'requests',
             'simplejson',
-            'tabulate',
             'repoze.lru',
-            'future',
-            'semver',
-            'environment_manager==0.2.3'
+            'environment_manager==0.2.5'
             ],
         setup_requires = pytest_runner,
         tests_require = [
