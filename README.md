@@ -1,9 +1,8 @@
 # envmgr-lib
 
-```
+```bash
 # Get all AMIs
-AMI.get_all()
-
+amis = AMI.get_all()
 
 # Create an ASG instance
 asg = ASG('my-asg-name', 'PROD')
@@ -23,10 +22,8 @@ status = asg.get_status()
 # Get ASG health
 health = asg.get_health()
 
-
-# Get intsances with AMI older than certain age
-Instance.get_intsances_by_ami_age(30)
-
+# Get instances with AMI older than certain age
+instances = Instance.get_instances_by_ami_age(30)
 
 # Create a Service instance
 service = Service('MyService', 'PROD')
