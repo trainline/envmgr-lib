@@ -11,7 +11,7 @@ class Service(object):
         client = EmClient()
         return client.get_deployment(deploy_id)
 
-    def __init__(self, name, env, version=None, deploy_id=None):
+    def __init__(self, name, env=None, version=None, deploy_id=None):
         self.name = name
         self.env = env
         self.__version = version
