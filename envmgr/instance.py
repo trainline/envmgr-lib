@@ -1,5 +1,8 @@
 # Copyright (c) Trainline Limited, 2017. All rights reserved. See LICENSE.txt in the project root for license information.
 
+import dateutil.parser
+
+from datetime import date
 from envmgr import EmClient, AMI
 from envmgr.utils import get_properties
 from repoze.lru import lru_cache
@@ -35,9 +38,11 @@ class Instance(object):
             'id': instance.get('InstanceId'),
             'type': instance.get('InstanceType'),
             'state': instance.get('State').get('Name'),
+            'age': (date.today() - dateutil.parser.parse(instance.get('LaunchTime')).date()).days,
             'name': get_tag_value(tags, 'Name'),
             'role': get_tag_value(tags, 'Role'),
             'cluster': get_tag_value(tags, 'OwningCluster'),
+            'env': get_tag_value(tags, 'Environment'),
             'ami_id': instance.get('ImageId'),
             'ami_name': None,
             'ami_age': None
@@ -47,9 +52,11 @@ class Instance(object):
     def __init__(self, **kwargs):
         self.id = kwargs.get('id')
         self.type = kwargs.get('type')
+        self.age = kwargs.get('age')
         self.name = kwargs.get('name')
         self.role = kwargs.get('role')
         self.cluster = kwargs.get('cluster')
+        self.env = kwargs.get('env')
         self.state = kwargs.get('state')
         self.ami_name = kwargs.get('ami_name')
         self.ami_age = kwargs.get('ami_age')
