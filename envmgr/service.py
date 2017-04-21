@@ -6,6 +6,11 @@ from envmgr import EmClient, Upstream
 
 class Service(object):
 
+    @staticmethod
+    def get_deployment_by_id(deploy_id):
+        client = EmClient()
+        return client.get_deployment(deploy_id)
+
     def __init__(self, name, env, version=None, deploy_id=None):
         self.name = name
         self.env = env
@@ -35,7 +40,7 @@ class Service(object):
     def get_health(self, slice=None):
         if slice is None:
             result = self.client.get_service_overall_health(self.name, self.env)
-            return [ asg.get('Services')[0] for asg in result.get('AutoScalingGroups') ]
+            return [ asg.get('Services') for asg in result.get('AutoScalingGroups') ][0]
         else:
             return self.client.get_service_health(self.name, self.env, slice)
 
@@ -75,7 +80,8 @@ class Service(object):
         else:
             data['mode'] = 'overwrite'
         is_dry_run = 'true' if dry_run else 'false'
-        self.__deploy_id = self.client.post_deployments(is_dry_run, data)
+        result = self.client.post_deployments(is_dry_run, data)
+        self.__deploy_id = result.get('id')
         return self.__deploy_id
 
     def toggle(self):
@@ -86,4 +92,4 @@ class Service(object):
             return Upstream(self.name, active_slice, self.env)
         else:
             raise Exception('Could not determine active slice')
-        
+
