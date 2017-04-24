@@ -40,7 +40,11 @@ class Service(object):
     def get_health(self, slice=None):
         if slice is None:
             result = self.client.get_service_overall_health(self.name, self.env)
-            return [ asg.get('Services') for asg in result.get('AutoScalingGroups') ][0]
+            result = [ asg.get('Services') for asg in result.get('AutoScalingGroups') ]
+            if result:
+                return result[0]
+            else:
+                return None
         else:
             return self.client.get_service_health(self.name, self.env, slice)
 
@@ -67,7 +71,7 @@ class Service(object):
         r.raise_for_status()
         return True
 
-    def deploy(self, version=None, slice=None, dry_run=False):
+    def deploy(self, version=None, slice=None, role=None, dry_run=False):
         self.__require_version_set(version)
         data = {
             'environment':self.env,
@@ -79,10 +83,14 @@ class Service(object):
             data['mode'] = 'bg'
         else:
             data['mode'] = 'overwrite'
+
+        if role is not None:
+            data['serverRole'] = role
+
         is_dry_run = 'true' if dry_run else 'false'
         result = self.client.post_deployments(is_dry_run, data)
         self.__deploy_id = result.get('id')
-        return self.__deploy_id
+        return result
 
     def toggle(self):
         self.client.put_service_slices_toggle(self.name, self.env)
