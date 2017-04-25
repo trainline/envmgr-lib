@@ -9,7 +9,7 @@ needs_pytest = {'pytest', 'test'}.intersection(sys.argv)
 pytest_runner = ['pytest-runner', 'nose'] if needs_pytest else []
 
 setup(name='envmgr-lib',
-        version='0.2.0',
+        version='0.2.1',
         description="Tools for the EM API",
         url="https://github.com/trainline/envmgr-lib",
         author="Trainline Engineering",
@@ -18,6 +18,7 @@ setup(name='envmgr-lib',
             'requests',
             'simplejson',
             'repoze.lru',
+            'python-dateutil',
             'environment_manager==0.2.5'
             ],
         setup_requires = pytest_runner,
