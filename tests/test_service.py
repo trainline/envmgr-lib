@@ -154,12 +154,12 @@ class TestService(TestCase):
         id = 'a67d92174feadcbeacb8ef'
         mock_post_deployments.return_value = {'id':id}
         service = Service('TestService', 'TE1', '10.0.0')
-        deploy_id = service.deploy()
-        self.assertEqual(id, deploy_id)
+        deployment = service.deploy()
+        self.assertEqual(id, deployment.get('id'))
     
     def test_get_deployment_raises_when_no_id(self):
         service = Service('TestService', 'TE1')
         with self.assertRaises(Exception) as context:
-            service.deploy_id = 'ade12398dbcbc139804278'
+            service.get_deployment()
         self.assertTrue('There is no deploy_id set for this service' in context.exception)
 

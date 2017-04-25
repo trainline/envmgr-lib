@@ -3,7 +3,7 @@
 from base64 import b64decode
 from environment_manager import EMApi
 
-def config(host, user, pword, retries=1, default_headers=None):
+def config(host, user, pword, retries=1, default_headers={}):
     EmClient.configure(host, user, pword, retries, default_headers)
 
 class EmClient(object):
@@ -14,7 +14,7 @@ class EmClient(object):
     api = None
 
     @staticmethod
-    def configure(host, user, pword, retries=1, default_headers=None):
+    def configure(host, user, pword, retries=1, default_headers={}):
         pword = b64decode(pword)
         EmClient.api = EMApi(server=host, user=user, password=pword, retries=retries, default_headers=default_headers)
 
