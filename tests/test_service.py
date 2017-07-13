@@ -64,6 +64,13 @@ class TestService(TestCase):
         service = Service('TestService', 'TE1')
         service.publish({}, '1.0.0')
         mock_package_url.assert_called_with('TestService', '1.0.0')
+
+    @patch('requests.put')
+    @patch('environment_manager.EMApi.get_package_upload_url_environment')
+    def test_publish_with_version_and_env_gets_package_url(self, mock_package_url, mock_requests):
+        service = Service('TestService', 'TE1')
+        service.publish({}, '1.0.0', 'SomeEnv')
+        mock_package_url.assert_called_with('TestService', '1.0.0', 'SomeEnv')
     
     @patch('requests.put')
     @patch('environment_manager.EMApi.get_package_upload_url')

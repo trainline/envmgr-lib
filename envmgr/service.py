@@ -57,13 +57,13 @@ class Service(object):
             raise Exception('There is no deploy_id set for this service')
         return self.client.get_deployment(self.__deploy_id)
 
-    def publish(self, file, version=None):
+    def publish(self, file, version=None, env=None):
         """
         Accept an open file object and publish it as a given
         version of this service. Raises on HTTP error
         """
         self.__require_version_set(version)
-        package_path = self.client.get_package_upload_url(self.name, self.version)
+        package_path = self.client.get_package_upload_url_environment(self.name, self.version, env) if env is not None else self.client.get_package_upload_url(self.name, self.version)
         is_dict = isinstance(package_path, dict)
         upload_url = package_path.get('url') if is_dict else package_path
         headers = {'content-type':'application/zip'}

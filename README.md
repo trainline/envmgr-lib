@@ -37,6 +37,10 @@ slices = service.get_slices(False)
 # Publish an open file handle as version 2.0.0 of the service
 service.publish(file, '2.0.0')
 
+# Publish an open file handle as version 2.0.0 of the service
+# configured for environment MyEnv
+service.publish(file, '2.0.0', 'MyEnv')
+
 # Deploy the service
 deploy_id = service.deploy()
 
