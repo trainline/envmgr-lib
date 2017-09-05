@@ -48,15 +48,13 @@ class TestService(TestCase):
     
     def test_publish_requires_version(self):
         service = Service('TestService', 'TE1')
-        with self.assertRaises(Exception) as context:
+        with self.assertRaisesRegexp(Exception, 'You must provide a version'):
             service.publish({})
-        self.assertTrue('You must provide a version' in context.exception)
 
     def test_publish_no_reset_version(self):
         service = Service('TestService', 'TE1', '1.0.0')
-        with self.assertRaises(Exception) as context:
+        with self.assertRaisesRegexp(Exception, 'You cannot reassign a Service version once it is set'):
             service.publish({}, '2.0.0')
-        self.assertTrue('You cannot reassign a Service version once it is set' in context.exception)
 
     @patch('requests.put')
     @patch('environment_manager.EMApi.get_package_upload_url')
@@ -101,15 +99,13 @@ class TestService(TestCase):
 
     def test_deploy_requires_version(self):
         service = Service('TestService', 'TE1')
-        with self.assertRaises(Exception) as context:
+        with self.assertRaisesRegexp(Exception, 'You must provide a version'):
             service.deploy()
-        self.assertTrue('You must provide a version' in context.exception)
 
     def test_deploy_no_reset_version(self):
         service = Service('TestService', 'TE1', '1.0.0')
-        with self.assertRaises(Exception) as context:
+        with self.assertRaisesRegexp(Exception, 'You cannot reassign a Service version once it is set'):
             service.deploy('2.0.0')
-        self.assertTrue('You cannot reassign a Service version once it is set' in context.exception)
 
     @patch('environment_manager.EMApi.post_deployments')
     def test_deploy_posts_default_data(self, mock_post_deployments):
@@ -166,7 +162,5 @@ class TestService(TestCase):
     
     def test_get_deployment_raises_when_no_id(self):
         service = Service('TestService', 'TE1')
-        with self.assertRaises(Exception) as context:
+        with self.assertRaisesRegexp(Exception, 'There is no deploy_id set for this service'):
             service.get_deployment()
-        self.assertTrue('There is no deploy_id set for this service' in context.exception)
-
