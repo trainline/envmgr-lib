@@ -1,0 +1,18 @@
+language: python
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+script: make test
+notifications:
+  email:
+    - false
+deploy:
+  provider: pypi
+  user: $PYPI_USER
+  password: $PYPI_PASSWORD
+  skip_cleanup: true
+  distributions: "sdist bdist_wheel"
+  on:
+    tags: true

@@ -1,5 +1,7 @@
 # envmgr-lib
 
+[![Build Status](https://travis-ci.org/trainline/envmgr-lib.svg?branch=master)](https://travis-ci.org/trainline/envmgr-lib)
+
 ```bash
 # Get all AMIs
 amis = AMI.get_all()
